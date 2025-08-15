@@ -10,9 +10,11 @@ defmodule SteelEx do
 
   ## Examples
 
-      iex> SteelEx.hello()
+      iex> SteelEx.hello_from_rust()
       "from rust"
 
   """
-  def hello(), do: :erlang.nif_error(:nif_not_loaded)
+  def hello_from_rust(), do: :erlang.nif_error(:nif_not_loaded)
+
+  def hello_from_scheme(), do: :erlang.nif_error(:nif_not_loaded)
 end

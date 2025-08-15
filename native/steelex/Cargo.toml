@@ -10,3 +10,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 rustler = "0.36.2"
+steel-core = { git = "https://github.com/mattwparas/steel.git", branch = "master" }
