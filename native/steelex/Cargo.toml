@@ -1,0 +1,12 @@
+[package]
+name = "steelex"
+version = "0.0.1"
+authors = []
+edition = "2021"
+
+[lib]
+name = "steelex"
+crate-type = ["cdylib"]
+
+[dependencies]
+rustler = "0.36.2"
