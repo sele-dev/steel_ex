@@ -1,13 +1,13 @@
 defmodule SteelExTest do
   use ExUnit.Case
-  doctest SteelEx
+  doctest SteelEx.Native
 
   test "hello from rust" do
-    assert SteelEx.hello_from_rust() == "from rust"
+    assert SteelEx.Native.hello_from_rust() == "from rust"
   end
 
   # ref https://github.com/rusterlium/rustler/blob/05f79740eb986cf9c338d2f3d96ebf95b35ad124/rustler/src/types/mod.rs#L122
   test "hello from scheme" do
-    assert SteelEx.hello_from_scheme == "from scheme"
+    assert SteelEx.Native.hello_from_scheme == "from scheme"
   end
 end

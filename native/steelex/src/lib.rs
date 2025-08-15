@@ -23,4 +23,4 @@ fn hello_from_scheme() -> String {
     greeting
 }
 
-rustler::init!("Elixir.SteelEx");
+rustler::init!("Elixir.SteelEx.Native");
