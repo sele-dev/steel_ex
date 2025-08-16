@@ -1,5 +1,21 @@
 defmodule SteelEx do
   @doc ~S"""
+  Initializes a Steel interpreter.
+
+  TODO:
+  - support different engine modes
+  - sandboxing engine "environments" on-disk / in memory?
+
+  ## Examples
+
+      iex> {:ok, vm} = SteelEx.steel_init()
+
+  """
+  def steel_init() do
+    raise "NYI"
+  end
+
+  @doc ~S"""
   Convenience function to evaluate a chunk of Scheme code.
   Does not allow interpolation.
 
