@@ -1,18 +1,34 @@
 defmodule SteelEx do
   @doc ~S"""
-  Initializes a Steel interpreter.
+  Initializes environment for a Steel Interpreter.
+  At this time, we simply ensure the steel data directory exists
 
   TODO:
-  - support different engine modes
-  - sandboxing engine "environments" on-disk / in memory?
+  - engine as an Elixir resource
+  - different engine modes
+  - sandboxing engine "environments" on-disk
 
   ## Examples
 
-      iex> {:ok, vm} = SteelEx.steel_init()
+      iex> {:ok, _path} = SteelEx.steel_init()
 
   """
   def steel_init() do
-    raise "NYI"
+    base_path = System.get_env("XDG_DATA_HOME") || default_xdg_data_home()
+    full_path = base_path <>  "/steel"
+
+    # What's idiom here?
+    case File.mkdir_p(full_path) do
+      :ok -> {:ok, full_path}
+      {:error, reason} ->
+        IO.puts("Failed to create steel data dir: #{reason}")
+        {:error, reason}
+    end
+  end
+
+  defp default_xdg_data_home do
+    home = System.get_env("HOME") || raise "User HOME environment variable is not set"
+    Path.join(home, ".local/share")
   end
 
   @doc ~S"""
@@ -28,11 +44,12 @@ defmodule SteelEx do
       ...> (define bar `(1 2 3))
       ...> (cadr bar)
       ...> """
-      ...> "2"
+      ...> {:ok, 2}
   """
   def sigil_SCM(chunk, _) do
     # TODO handle vars, assignments, and errors from the engine
     # aka the rest of the owl
+    SteelEx.steel_init()
     SteelEx.Native.eval(chunk)
   end
 end

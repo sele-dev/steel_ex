@@ -1,18 +1,18 @@
 defmodule SteelExTest do
   import SteelEx
   use ExUnit.Case
-  doctest SteelEx.Native
   doctest SteelEx
+  doctest SteelEx.Native
 
   test "~SCM sigil" do
-    assert sigil_SCM("(define foo `(1 2 3)) (cadr foo)", []) == "2"
+    assert {:ok, 2} == sigil_SCM("(define foo `(1 2 3)) (cadr foo)", [])
   end
 
   # Unneeded?
   test "~SCM sigil heredoc" do
-    assert ~SCM"""
-      (define foo `(1 2 3))
-      (cadr foo)
-    """ == "2"
+    assert {:ok, 2} == ~SCM"""
+                        (define foo `(1 2 3))
+                        (cadr foo)
+                        """
   end
 end

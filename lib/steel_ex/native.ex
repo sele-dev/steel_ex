@@ -9,8 +9,7 @@ defmodule SteelEx.Native do
 
   ## Examples
 
-      iex> SteelEx.Native.eval("(define foo `(1 2 3)) (cadr foo)")
-      "2"
+      iex> {:ok, 2} = SteelEx.Native.eval("(define foo `(1 2 3)) (cadr foo)")
 
   """
   def eval(_), do: :erlang.nif_error(:nif_not_loaded)
