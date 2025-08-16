@@ -1,4 +1,4 @@
-# SteelEx NIFs Crate
+# SteelEx NIFs
 Built alongside the [SteelEx](https://github.com/sele-dev/steelex) project.
 
 ## License
