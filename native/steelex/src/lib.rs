@@ -1,8 +1,16 @@
+//! NIFs and helper functions to facilitate work between Elixir
+//!   and [`Steel Scheme`] interepreters.
+//! Heavily inspired by [`pythonx`], but uses [`rustler`].
+//!
+//! [`Steel Scheme`]: https://github.com/mattwparas/steel
+//! [`pythonx`]: https://github.com/livebook-dev/pythonx
+//! [`rustler`]: https://github.com/rusterlium/rustler
+
 use rustler::{Encoder, Env, Term, types::atom::Atom};
 use steel::rvals::SteelVal;
 use steel::steel_vm::engine::Engine;
 
-// The Term will live for the lifetime of the NIF's environment
+/// Note: the Term will live for the lifetime of the NIF's environment
 fn steel_val_to_term<'a>(env: Env<'a>, val: &SteelVal) -> Term<'a> {
     match val {
         SteelVal::BoolV(b) => b.encode(env),
@@ -29,14 +37,35 @@ fn steel_val_to_term<'a>(env: Env<'a>, val: &SteelVal) -> Term<'a> {
     }
 }
 
-// TODO: error handling - need to provide {:err, <message>}
 #[rustler::nif]
-fn eval(env: Env, chunk: String) -> Result<Term, String> {
+fn eval(env: Env, chunk: String) -> Term {
     let mut vm = Engine::new();
 
-    let results = vm.run(chunk).unwrap(); // XXX
+    // TODO: let rustler handle the tagged tuple
+    match vm.run(chunk) {
+        Ok(results) => match results.last() {
+            Some(val) => {
+                let tag = rustler::types::atom::ok();
+                let res = steel_val_to_term(env, val);
+                (tag, res).encode(env)
+            },
+            None => {
+                // TODO comprehensive handling return cases
+                let tag = rustler::types::atom::ok();
+                let res = steel_val_to_term(env, &steel::rvals::SteelVal::from("nil".to_string()));
+                (tag, res).encode(env)
+            },
+        },
+        Err(e) => {
+            // TODO - actually pass up the error
+            let tag = rustler::types::atom::error();
+            let error = format!("Steel evaluation error: {:?}", e);
+            (tag, error).encode(env)
+        }
+    }
+    // let results = vm.run(chunk).unwrap(); // XXX
 
-    Ok(steel_val_to_term(env, results.last().unwrap())) //XXX
+    // Ok(steel_val_to_term(env, results.last().unwrap())) //XXX
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
