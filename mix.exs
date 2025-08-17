@@ -15,7 +15,8 @@ defmodule SteelEx.MixProject do
         licenses: ["MPL-2.0"],
         links: %{
                   "GitHub" => "https://github.com/sele-dev/steel_ex",
-        }
+        },
+        files: ~w(lib native priv mix.exs README* LICENSE*)
       ]
     ]
   end
