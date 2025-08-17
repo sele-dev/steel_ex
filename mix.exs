@@ -7,7 +7,16 @@ defmodule SteelEx.MixProject do
       version: "0.0.1",
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      description: "SteelEx allows you to work with embedded Steel Scheme in Elixir.",
+      source_url: "https://github.com/sele-dev/steel_ex",
+      package: [
+        maintainers: ["Caleb Currie"],
+        licenses: ["MPL-2.0"],
+        links: %{
+                  "GitHub" => "https://github.com/sele-dev/steel_ex",
+        }
+      ]
     ]
   end
 
