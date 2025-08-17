@@ -7,7 +7,7 @@ SteelEx allows you to work with embedded [Steel Scheme](https://github.com/mattw
 - Pre-Alpha versions: v0.0.X
 
 ## Development Environment Setup
-This is suitable at least for use on (Fedora Kinoite)[https://fedoraproject.org/atomic-desktops/kinoite/]. (distrobox)[https://github.com/89luca89/distrobox] is useful but not required.
+This is suitable at least for use on [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/). [distrobox](https://github.com/89luca89/distrobox) is useful but not required.
 ```bash
 distrobox create --image docker.io/library/elixir:1.18.4 --name steel_ex
 distrobox enter steel_ex
