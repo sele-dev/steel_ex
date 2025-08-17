@@ -52,4 +52,10 @@ defmodule SteelEx do
     SteelEx.steel_init()
     SteelEx.Native.eval(chunk)
   end
+
+  # Helper to initialize the steel data dir then invoke the repl NIF
+  def run_repl() do
+    SteelEx.steel_init()
+    SteelEx.Native.run_repl()
+  end
 end

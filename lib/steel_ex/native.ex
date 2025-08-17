@@ -13,4 +13,7 @@ defmodule SteelEx.Native do
 
   """
   def eval(_), do: :erlang.nif_error(:nif_not_loaded)
+
+  # TODO: test in Elixir or Rust? Indirectly feed ctrl+d or (quit) ?
+  def run_repl(), do: :erlang.nif_error(:nif_not_loaded)
 end

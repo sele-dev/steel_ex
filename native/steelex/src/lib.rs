@@ -39,4 +39,15 @@ fn eval(env: Env, chunk: String) -> Result<Term, String> {
     Ok(steel_val_to_term(env, results.last().unwrap())) //XXX
 }
 
+#[rustler::nif(schedule = "DirtyCpu")]
+fn run_repl() -> () {
+    let vm = Engine::new();
+    // TODO
+    // - handle MultipleHandlers: expose as Elixir resource?
+    // - how to propagate IO error from repl?
+    // - {:ok, <done>} otherwise?
+    // - printout in iex is mangled
+    steel_repl::run_repl(vm).unwrap() //XXX
+}
+
 rustler::init!("Elixir.SteelEx.Native");
