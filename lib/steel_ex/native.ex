@@ -1,7 +1,7 @@
 defmodule SteelEx.Native do
   use Rustler, otp_app: :steelex, crate: "steelex"
   @moduledoc """
-  Documentation for `SteelEx.Native`.
+  NIFs to facilitate work with [Steel Scheme](https://github.com/mattwparas/steel).
   """
 
   @doc ~S"""

@@ -1,12 +1,11 @@
 defmodule SteelEx do
-  @doc ~S"""
-  Initializes environment for a Steel Interpreter.
-  At this time, we simply ensure the steel data directory exists
+  @moduledoc """
+  Helpers to facilitate work with [Steel Scheme](https://github.com/mattwparas/steel).
+  """
 
-  TODO:
-  - engine as an Elixir resource
-  - different engine modes
-  - sandboxing engine "environments" on-disk
+  @doc ~S"""
+  Initializes environment for a [Steel Scheme](https://github.com/mattwparas/steel) interpreter.
+  At this time, we simply ensure the steel data directory exists
 
   ## Examples
 
@@ -14,10 +13,14 @@ defmodule SteelEx do
 
   """
   def steel_init() do
+    # TODO:
+    # - engine as an Elixir resource
+    # - different engine modes
+    # - sandboxing engine "environments" on-disk
     base_path = System.get_env("XDG_DATA_HOME") || default_xdg_data_home()
     full_path = base_path <>  "/steel"
 
-    # What's idiom here?
+    # TODO What's idiomatic here?
     case File.mkdir_p(full_path) do
       :ok -> {:ok, full_path}
       {:error, reason} ->
@@ -35,9 +38,6 @@ defmodule SteelEx do
   Convenience function to evaluate a chunk of Scheme code.
   Does not allow interpolation.
 
-  TODO:
-  - any purpose for sigil modifiers?
-
   ## Examples
 
       iex> ~SCM"""
@@ -47,8 +47,9 @@ defmodule SteelEx do
       ...> {:ok, 2}
   """
   def sigil_SCM(chunk, _) do
-    # TODO handle vars, assignments, and errors from the engine
-    # aka the rest of the owl
+    # TODO
+    # - handle vars, assignments, and errors from the engine
+    #     aka the rest of the owl
     SteelEx.steel_init()
     SteelEx.Native.eval(chunk)
   end
