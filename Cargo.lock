@@ -1631,7 +1631,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "steelex"
+name = "steel_ex"
 version = "0.0.1"
 dependencies = [
  "rustler",

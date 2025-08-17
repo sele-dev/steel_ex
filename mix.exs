@@ -3,7 +3,7 @@ defmodule SteelEx.MixProject do
 
   def project do
     [
-      app: :steelex,
+      app: :steel_ex,
       version: "0.0.1",
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
@@ -21,6 +21,7 @@ defmodule SteelEx.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ex_doc, "~> 0.34", only: :dev, runtime: false, warn_if_outdated: true},
       {:rustler, "~> 0.36.2"}
     ]
   end

@@ -1,4 +1,4 @@
 [workspace]
 resolver = "2"
 
-members = ["native/steelex"]
+members = ["native/steel_ex"]

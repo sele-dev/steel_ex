@@ -1,5 +1,5 @@
 defmodule SteelEx.Native do
-  use Rustler, otp_app: :steelex, crate: "steelex"
+  use Rustler, otp_app: :steel_ex, crate: "steel_ex"
   @moduledoc """
   NIFs to facilitate work with [Steel Scheme](https://github.com/mattwparas/steel).
   """
