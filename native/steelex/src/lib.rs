@@ -18,8 +18,17 @@ fn steel_val_to_term<'a>(env: Env<'a>, val: &SteelVal) -> Term<'a> {
         SteelVal::NumV(f) => f.encode(env),
         SteelVal::CharV(c) => (*c as u32).encode(env),
         SteelVal::StringV(s) => s.as_str().encode(env),
+        // As lists are recursively defined, recursively encode
+        SteelVal::ListV(l) => {
+            let final_list = l
+                .iter()
+                .map(|item| steel_val_to_term(env, item))
+                .collect::<Vec<Term<'a>>>();
+            final_list.encode(env)
+        },
         SteelVal::SymbolV(s) => {
             // TODO safer and consistent atom handling & BadArg
+            // - functions vs symbols will need to be differentiated
             match Atom::from_str(env, s.as_str()) {
                 Ok(afs) => afs.encode(env),
                 Err(_e) => s.as_str().encode(env),
