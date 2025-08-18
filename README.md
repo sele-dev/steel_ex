@@ -1,5 +1,5 @@
 # SteelEx
-[![Hex.pm](https://img.shields.io/hexpm/v/steel_ex.svg?style=flat&color=blue)](https://hex.pm/packages/steel_ex) [![Documentation](https://img.shields.io/badge/documentation-gray)](https://hexdocs.pm/steelx)
+[![Hex.pm](https://img.shields.io/hexpm/v/steel_ex.svg?style=flat&color=blue)](https://hex.pm/packages/steel_ex) [![Documentation](https://img.shields.io/badge/documentation-gray)](https://hexdocs.pm/steel_ex)
 
 SteelEx allows you to work with embedded [Steel Scheme](https://github.com/mattwparas/steel) in Elixir. It is heavily inspired by [pythonx](https://github.com/livebook-dev/pythonx).
 
