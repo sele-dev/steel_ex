@@ -35,8 +35,27 @@ defmodule SteelEx do
   end
 
   @doc ~S"""
-  Convenience function to evaluate a chunk of Scheme code.
-  Does not allow interpolation.
+  Convenience function to evaluate a chunk of Scheme code, return its result, and
+  as a side effect propagate all root namespace bindings from the Scheme code into
+  the current environment.
+  Does not allow string interpolation.
+
+  ## Examples
+
+      iex> ~SCMB"""
+      ...> (define foo (+ 1 2 3 4))
+      ...> (define bar (+ 5 6 7 8))
+      ...> """
+      ...> %{"bar" => 26, "foo" => 10}
+  """
+  def sigil_SCMB(chunk, _) do
+    SteelEx.steel_init()
+    SteelEx.Native.eval_to_root_bindings(chunk)
+  end
+
+  @doc ~S"""
+  Convenience function to evaluate a chunk of Scheme code and return only its result.
+  Does not allow string interpolation.
 
   ## Examples
 
@@ -51,7 +70,7 @@ defmodule SteelEx do
     # - handle vars, assignments, and errors from the engine
     #     aka the rest of the owl
     SteelEx.steel_init()
-    SteelEx.Native.eval(chunk)
+    SteelEx.Native.eval_to_result(chunk)
   end
 
   # Helper to initialize the steel data dir then invoke the repl NIF

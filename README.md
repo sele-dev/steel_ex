@@ -5,6 +5,11 @@ SteelEx allows you to work with embedded [Steel Scheme](https://github.com/mattw
 
 ## Roadmap
 - Pre-Alpha versions: v0.0.X
+- v0.0.2:
+  - Bidirectionally handle assignments, at least as a map we pass back and forth
+  - Generalized eval function in the style of pythonx
+  - Handle more SteelVal conversions
+  - Extended documentation with nontrivial Scheme programs
 
 ## Installation
 The library is available at [hex](https://hex.pm/packages/steel_ex) but currently doesn't include pre-compiled NIFs, so Rust is required to compile the library locally. It can be installed by adding `steel_ex` to your dependencies list in `mix.exs`:
@@ -12,7 +17,7 @@ The library is available at [hex](https://hex.pm/packages/steel_ex) but currentl
 ```elixir
 def deps do
   [
-    {:steel_ex, "~> 0.0.1"}
+    {:steel_ex, "~> 0.0.2"}
   ]
 end
 ```
@@ -21,7 +26,7 @@ If using [livebook](https://livebook.dev/), install it at the top of your notebo
 
 ```elixir
 Mix.install([
-  {:steel_ex, "~> 0.0.1"}
+  {:steel_ex, "~> 0.0.2"}
 ])
 # => :ok
 ```
