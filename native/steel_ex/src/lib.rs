@@ -12,7 +12,8 @@ use steel::steel_vm::engine::Engine;
 use std::collections::HashMap;
 
 /// Note: the Term will live for the lifetime of the NIF's environment
-/// TODO - remove manual encoding and let Rustler handle it implicitly.
+/// TODO - remove manual encoding and let Rustler handle it implicitly
+///   aka is this most of the implementation of encode for SteelVal?
 fn steel_val_to_term<'a>(env: Env<'a>, val: &SteelVal) -> Term<'a> {
     match val {
         SteelVal::BoolV(b) => b.encode(env),
@@ -67,31 +68,22 @@ fn eval_to_root_bindings(env: Env, chunk: String) -> Term {
     // TODO: will this possibly return duplicates? See the steel-core source.
     // let new_symbols = steel_engine.readable_globals(symbol_map_offset);
 
-    // TODO - hacky but functional
+    // Naive attempt to resolve all symbols, extract their values,
+    //   and finally encode them into a HashMap we pass back to the BEAM.
     // TODO: will this possibly return duplicates? See the steel-core source.
     let root_bindings: HashMap<Term, Term> =
         steel_engine
             .readable_globals(symbol_map_offset)
             .into_iter()
-            .map(|symbol| symbol.resolve().to_string())
-            .map(|symbol_str| (symbol_str.clone(),
-                Engine::extract_value(&steel_engine, &symbol_str).unwrap()))
-            .map(|(symbol_str, steel_val)| (symbol_str.encode(env),
-                steel_val_to_term(env, &steel_val)))
+            .map(|symbol| {
+                let symbol_str = symbol.resolve();
+                let steel_val = Engine::extract_value(&steel_engine, symbol_str).unwrap();
+                let encoded_str = symbol_str.encode(env);
+                let encoded_val= steel_val_to_term(env, &steel_val);
+                (encoded_str, encoded_val)
+            })
             .collect();
 
-    // let mut root_bindings: HashMap<Term, Term> = HashMap::new();
-
-    // // Naive attempt to resolve all symbols, extract their values,
-    // //   and finally encode them into a HashMap we pass back to the BEAM.
-    // for symbol in new_symbols.iter() {
-    //     let symbol_str = symbol.resolve();
-    //     let steel_val = Engine::extract_value(&steel_engine, symbol_str).unwrap();
-    //     let encoded_str = symbol_str.encode(env);
-    //     let encoded_val = steel_val_to_term(env, &steel_val);
-
-    //     root_bindings.insert(encoded_str, encoded_val);
-    // }
     root_bindings.encode(env)
 }
 
