@@ -11,6 +11,15 @@ use steel::rvals::SteelVal;
 use steel::steel_vm::engine::Engine;
 use std::collections::HashMap;
 
+/// BeamSteelVal is simply a SteelVal that may be encoded as a BEAM term.
+struct BeamSteelVal(SteelVal);
+
+impl rustler::Encoder for BeamSteelVal {
+    fn encode<'b>(&self, env: Env<'b>) -> Term<'b> {
+        steel_val_to_term(env, &self.0)
+    }
+}
+
 /// Note: the Term will live for the lifetime of the NIF's environment
 /// TODO - remove manual encoding and let Rustler handle it implicitly
 ///   aka is this most of the implementation of encode for SteelVal?
@@ -71,16 +80,17 @@ fn eval_to_root_bindings(env: Env, chunk: String) -> Term {
     // Naive attempt to resolve all symbols, extract their values,
     //   and finally encode them into a HashMap we pass back to the BEAM.
     // TODO: will this possibly return duplicates? See the steel-core source.
-    let root_bindings: HashMap<Term, Term> =
+    let root_bindings: HashMap<String, BeamSteelVal> =
         steel_engine
             .readable_globals(symbol_map_offset)
             .into_iter()
             .map(|symbol| {
-                let symbol_str = symbol.resolve();
-                let steel_val = Engine::extract_value(&steel_engine, symbol_str).unwrap();
-                let encoded_str = symbol_str.encode(env);
-                let encoded_val= steel_val_to_term(env, &steel_val);
-                (encoded_str, encoded_val)
+                let symbol_str = symbol.resolve().to_string();
+                let steel_val = Engine::extract_value(&steel_engine, &symbol_str).unwrap();
+                (symbol_str, BeamSteelVal(steel_val))
+                // let encoded_str = symbol_str.encode(env);
+                // let encoded_val= steel_val_to_term(env, &steel_val);
+                // (encoded_str, encoded_val)
             })
             .collect();
 
